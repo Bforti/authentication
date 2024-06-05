@@ -20,7 +20,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -47,6 +46,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+             APIfetch: async (endpoint, method = "GET", body = null) => {
+                const backendURL = process.env.BACKEND_URL || "http://localhost:3001";
+
+                const params = { method, headers: {} };
+                if (body) {
+                    params.headers["Content-Type"] = "application/json";
+                    params.body = JSON.stringify(body);
+                }
+                try {
+                    const res = await fetch(`${backendURL}${endpoint}`, params);
+                    if (!res.ok) throw new Error(res.statusText);
+                    return await res.json();
+                } catch (error) {
+                    console.error("Error fetching data durign login:", error);
+                    throw error;
+                }
+            },
             signup: async (email, password) => {
                 const actions = getActions();
                 try {
@@ -109,24 +125,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('favorites');
             },
-            // Acción para registrarse
-            APIfetch: async (endpoint, method = "GET", body = null) => {
-                const backendURL = process.env.BACKEND_URL || "http://localhost:3001";
-
-                const params = { method, headers: {} };
-                if (body) {
-                    params.headers["Content-Type"] = "application/json";
-                    params.body = JSON.stringify(body);
-                }
-                try {
-                    const res = await fetch(`${backendURL}api${endpoint}`, params);
-                    if (!res.ok) throw new Error(res.statusText);
-                    return await res.json();
-                } catch (error) {
-                    console.error("Error fetching data durign login:", error);
-                    throw error;
-                }
-            } ,
 			loadSession: () => {
                 const token = localStorage.getItem("accessToken");
                 setStore({ token });

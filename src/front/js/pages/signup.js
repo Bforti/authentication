@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import { Context } from '../store/appContext'; // Importa el contexto Flux
+import { Context } from '../store/appContext'; 
 import { useNavigate } from 'react-router-dom';
 
 export const Signup = () => {
@@ -9,19 +9,17 @@ export const Signup = () => {
     const [passwordError, setPasswordError] = useState('');
     const [formError, setFormError] = useState(false);
 
-    const { actions } = useContext(Context); // Obtén las acciones del contexto Flux
+    const { actions } = useContext(Context);
     const navigate = useNavigate();
-    const errorRef = useRef(null); // Referencia al elemento del mensaje de error
+    const errorRef = useRef(null); 
 
     useEffect(() => {
-        // Función para hacer scroll al mensaje de error
+        
         const scrollToError = () => {
             if (errorRef.current) {
                 errorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         };
-
-        // Si hay un error de contraseña, hacer scroll hacia el mensaje de error después de un breve retraso
         if (passwordError) {
             const timer = setTimeout(scrollToError, 100);
             return () => clearTimeout(timer);
@@ -31,33 +29,31 @@ export const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Verificar si algún campo está vacío
+     
         if (email === '' || password === '' ) {
             setFormError(true);
             return;
         }
 
-        // Resetear el estado de error del formulario
         setFormError(false);
 
-        // Verificar si la contraseña cumple con los requisitos
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
         if (!password.match(passwordRegex)) {
             setPasswordError('La contraseña debe tener al menos 8 caracteres y contener al menos una letra mayúscula, una letra minúscula y un número.');
             return;
         }
 
-        // Llama a la acción signup para registrar al usuario
+       
         const success = await actions.signup(email, password);
 
         // Si el registro es exitoso, redirige al usuario a la página de inicio de sesión
         if (success) {
-            navigate('/login');
+            navigate('/');
         }
     };
 
     const handleLogin = () => {
-        navigate('/');
+        navigate('/login');
     };
 
 

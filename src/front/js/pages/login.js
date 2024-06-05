@@ -36,10 +36,11 @@ export const Login = () => {
 
     // Redireccionar si el usuario está autenticado
     if (loggedIn) {
-        navigate("/"); // Redireccionar al usuario al home
+        navigate("/private"); // Redireccionar al usuario al private
     }
 
     return (
+        <div className="container-fluid p-1">
         <form onSubmit={handleLogin}>
             <div>
                 <h1>Login</h1>
@@ -54,7 +55,7 @@ export const Login = () => {
                 </div>
             )}
 
-            <div className="mb-3">
+            <div className="mb-3 p-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">
                     Email address
                 </label>
@@ -112,6 +113,7 @@ export const Login = () => {
                 </button>
             </div>
         </form>
+        </div>
     );
 };
 

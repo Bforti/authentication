@@ -64,5 +64,5 @@ def user_login():
 def private():
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
-    return jsonify({'message': f'Hello, bruno!'})
+    return jsonify({'message': f'Hello, bro!'})
 
